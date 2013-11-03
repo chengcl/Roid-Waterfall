@@ -12,5 +12,5 @@ Android瀑布流组件，效果和Pinterest、美丽说等类似。<BR/>
 不支持像ListView、GridView等传统AdapterView一样通过更新数据自动刷新View。<BR/>
 
 <h3>使用注意：</h3>
-本项目由于使用了下拉刷新组件，需要引用<a target="_blank" href="https://github.com/RincLiu/roid-lib-rinc">roid-lib-rinc</a>项目中的pulltorefresh模块，所以需要将该项目作为Library引用进来，当然也可以只将相关代码拷贝进来；<BR/>
+本项目中的下拉刷新特性引用了<a target="_blank" href="https://github.com/RincLiu/roid-lib-rinc">roid-lib-rinc</a>项目中的pulltorefresh模块，所以需要将该项目作为Library引用进来，当然也可以只将相关代码拷贝进来；<BR/>
 如果自定义列数或控制ScrollBar是否显示，需要通过XML布局，然后设置相关属性值；<BR/>
