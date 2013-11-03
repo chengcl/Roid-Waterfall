@@ -1,4 +1,4 @@
-<h1>Android瀑布流组件，效果和Pinterest、美丽说等类似。</h1>
+Android瀑布流组件，效果和Pinterest、美丽说等类似。<BR/>
 
 <h2>已具备特性</h2>
 支持列数自定义，默认3列；<BR/>
