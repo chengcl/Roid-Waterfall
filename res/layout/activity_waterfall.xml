@@ -1,4 +1,4 @@
-<com.rincliu.library.widget.view.waterfall.WaterfallView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.rincliu.library.widget.view.waterfall.base.WaterfallView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res/com.rincliu.library"
         android:id="@+id/wfv"
         android:padding="3dp"

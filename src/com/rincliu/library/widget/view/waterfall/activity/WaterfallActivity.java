@@ -1,10 +1,25 @@
+/**
+ * Copyright (c) 2013-2014, Rinc Liu (http://rincliu.com).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.rincliu.library.widget.view.waterfall.activity;
 
 import com.rincliu.library.R;
-import com.rincliu.library.widget.view.waterfall.WaterfallView;
-import com.rincliu.library.widget.view.waterfall.WaterfallView.OnWaterfallRefreshListener;
-import com.rincliu.library.widget.view.waterfall.WaterfallView.OnWaterfallScrollListener;
-import com.rincliu.library.widget.view.waterfall.WaterfallView.WaterfallItemHandler;
+import com.rincliu.library.widget.view.waterfall.base.WaterfallView;
+import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallRefreshListener;
+import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallScrollListener;
+import com.rincliu.library.widget.view.waterfall.base.WaterfallView.WaterfallItemHandler;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,13 +34,13 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
-public class MainActivity extends Activity {
+public class WaterfallActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_waterfall);
 		final WaterfallView wfv=(WaterfallView)findViewById(R.id.wfv);
 		setContentView(wfv);
 		wfv.createView(getView(200, true));
@@ -36,6 +51,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onScrollToBottom() {
 				wfv.startLoadMore();
+				//TODO: Simulating the process of loading more data
 				new Thread(){
 					public void run(){
 						try {
@@ -61,10 +77,11 @@ public class MainActivity extends Activity {
 		wfv.setWaterfallItemHandler(new WaterfallItemHandler(){
 			@Override
 			public void onItemClick(View view, int position) {
-				Toast.makeText(MainActivity.this, ""+position, Toast.LENGTH_SHORT).show();
+				Toast.makeText(WaterfallActivity.this, ""+position, Toast.LENGTH_SHORT).show();
 			}
 			@Override
 			public void onItemVisible(View view, int position) {
+				//TODO: Simulating the process of image loading
 				final ImageView iv=(ImageView)view;
 				wfv.postDelayed(new Runnable(){
 					@Override
@@ -75,6 +92,7 @@ public class MainActivity extends Activity {
 			}
 			@Override
 			public void onItemInvisible(View view, int position) {
+				//TODO: Simulating the process of image recycle
 				ImageView iv=(ImageView)view;
 				iv.setImageDrawable(new ColorDrawable(Color.LTGRAY));
 			}
@@ -82,6 +100,7 @@ public class MainActivity extends Activity {
 		wfv.setOnWaterfallRefreshListener(new OnWaterfallRefreshListener(){
 			@Override
 			public void onRefresh() {
+				//TODO: Simulating the process of data refreshing
 				new Thread(){
 					public void run(){
 						try {
@@ -102,6 +121,7 @@ public class MainActivity extends Activity {
 				}.start();
 			}
 		});
+		//TODO: Simulating the process of first data loading
 		for(int i=200;i<400;i+=5){
 			wfv.addItem(getView(i, false));
 		}
@@ -111,6 +131,7 @@ public class MainActivity extends Activity {
 	private static Handler handler=new Handler();
 	
 	private View getView(int height, boolean isHeader){
+		//TODO: Simulating the process of creating view
 		ImageView iv=new ImageView(this);
 		iv.setScaleType(ScaleType.FIT_XY);
 		if(isHeader){
