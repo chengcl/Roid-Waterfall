@@ -122,7 +122,7 @@ public class WaterfallPagerActivity extends Activity {
 			}
 			@Override
 			public void onAlertNoMore() {
-				RLUiUtil.toast(WaterfallPagerActivity.this, "没有更多数据");
+				RLUiUtil.toast(WaterfallPagerActivity.this, "No more data.");
 			}
 		});
 	}
