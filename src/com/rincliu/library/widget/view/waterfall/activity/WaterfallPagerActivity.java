@@ -39,13 +39,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
 public class WaterfallPagerActivity extends Activity {
+	private WaterfallPagerView wfv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_waterfall_pager);
-		final WaterfallPagerView wfv=(WaterfallPagerView)findViewById(R.id.wfv);
+		wfv=(WaterfallPagerView)findViewById(R.id.wfv);
 		setContentView(wfv);
 		wfv.createView(getView(200));//TODO: Simulating the process of creating header view
 		wfv.setWaterfallItemHandler(new WaterfallItemHandler(){
@@ -145,5 +146,23 @@ public class WaterfallPagerActivity extends Activity {
 	public class WaterfallBean implements Serializable{
 		private static final long serialVersionUID = -2016014533623788774L;
 		//TODO
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		wfv.onActivityResume();
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+		wfv.onActivityPause();
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		wfv.onActivityDestroy();
 	}
 }

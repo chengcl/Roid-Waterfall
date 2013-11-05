@@ -36,13 +36,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
 public class WaterfallActivity extends Activity {
-
+	private WaterfallView wfv;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_waterfall);
-		final WaterfallView wfv=(WaterfallView)findViewById(R.id.wfv);
+		wfv=(WaterfallView)findViewById(R.id.wfv);
 		setContentView(wfv);
 		wfv.createView(getView(200, true));//TODO: Simulating the process of creating header view
 		wfv.setOnWaterfallScrollListener(new OnWaterfallScrollListener(){
@@ -149,5 +150,23 @@ public class WaterfallActivity extends Activity {
 		iv.setLayoutParams(lp);
 		iv.setPadding(6, 6, 6, 6);
 		return iv;
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		wfv.onActivityResume();
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+		wfv.onActivityPause();
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		wfv.onActivityDestroy();
 	}
 }

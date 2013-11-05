@@ -16,9 +16,11 @@
 package com.rincliu.library.widget.view.waterfall.base;
 
 import java.util.ArrayList;
+
 import com.rincliu.library.R;
 import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshBase;
 import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshScrollView;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -118,7 +120,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 	            	    	onWaterfallScrollListener.onScrollToBottom();
 	            	    }
 	                }
-	                updateState();
+	                updateState(false);
 	            }else{
 	                currentScroll=sv.getScrollY();
 	                postDelayed(scrollerTask, DELAY);
@@ -192,8 +194,29 @@ public class WaterfallView extends PullToRefreshScrollView{
 		super.onRefreshComplete();
 		super.setMode(Mode.PULL_FROM_START);
 		if(isSuccess){
-			updateState();
+			updateState(false);
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void onActivityResume(){
+		updateState(false);
+	}
+	
+	/**
+	 * 
+	 */
+	public void onActivityPause(){
+		updateState(true);
+	}
+	
+	/**
+	 * 
+	 */
+	public void onActivityDestroy(){
+		removeAllItems();
 	}
 	
 	/**
@@ -294,28 +317,33 @@ public class WaterfallView extends PullToRefreshScrollView{
 		this.waterfallItemHandler=waterfallItemHandler;
 	}
 	
-	private void updateState(){
+	private void updateState(final boolean isForceRecycle){
 		if(waterfallItemHandler!=null){
 			post(new Runnable(){
             	@Override
             	public void run(){
             		for(int i=0;i<itemCount;i++){
             			View item=findViewWithTag(i);
-            			if(isScrollViewItemVisible(sv, i)){
-            				android.util.Log.d("@",i+"+");
-        					if(!visibleArray.get(i)){
-        						android.util.Log.d("@",i+"++");
-        						waterfallItemHandler.onItemVisible(item, i);
-        						visibleArray.put(i, true);
-        					}
-        				}else{
-        					android.util.Log.d("@",i+"-");
-        					if(visibleArray.get(i)){
-        						android.util.Log.d("@",i+"--");
-        						waterfallItemHandler.onItemInvisible(item, i);
-        						visibleArray.put(i, false);
-        					}
-        				}
+            			if(item!=null){
+            				if(isForceRecycle){
+                				if(visibleArray.get(i)){
+            						waterfallItemHandler.onItemInvisible(item, i);
+            						visibleArray.put(i, false);
+            					}
+                			}else{
+                				if(isScrollViewItemVisible(sv, i)){
+                					if(!visibleArray.get(i)){
+                						waterfallItemHandler.onItemVisible(item, i);
+                						visibleArray.put(i, true);
+                					}
+                				}else{
+                					if(visibleArray.get(i)){
+                						waterfallItemHandler.onItemInvisible(item, i);
+                						visibleArray.put(i, false);
+                					}
+                				}
+                			}
+            			}
         			}
             	}
             });
