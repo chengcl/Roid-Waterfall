@@ -23,6 +23,7 @@ import com.rincliu.library.util.RLUiUtil;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallItemHandler;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallItemClickListener;
 import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerAdapter;
+import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerHandler;
 import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerView;
 
 import android.os.Bundle;
@@ -77,7 +78,7 @@ public class WaterfallPagerActivity extends Activity {
 				Toast.makeText(WaterfallPagerActivity.this, ""+position, Toast.LENGTH_SHORT).show();
 			}
 		});
-		wfv.setWaterfallPagerAdapter(new WaterfallPagerAdapter(this){
+		wfv.setWaterfallPagerAdapter(new WaterfallPagerAdapter(this, new WaterfallPagerHandler(){
 			private int i=0;
 			@Override
 			public void onFetchDataHttp(int currentPage, int currentStart) {
@@ -87,7 +88,7 @@ public class WaterfallPagerActivity extends Activity {
 				} catch (InterruptedException e) {
                     e.printStackTrace();
 				}
-				super.notifyFetchDataSuccess("");
+				wfv.getWaterfallAdapter().notifyFetchDataSuccess("");
 				//If the request is failed you should call super.notifyDataFailed();
 				i++;
 			}
@@ -126,7 +127,7 @@ public class WaterfallPagerActivity extends Activity {
 			public void onAlertNoMore() {
 				RLUiUtil.toast(WaterfallPagerActivity.this, "No more data.");
 			}
-		});
+		}));
 		wfv.load();
 	}
 	
