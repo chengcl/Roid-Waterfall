@@ -20,10 +20,10 @@ import java.util.ArrayList;
 
 import com.rincliu.library.R;
 import com.rincliu.library.util.RLUiUtil;
+import com.rincliu.library.widget.view.waterfall.base.WaterfallItemHandler;
+import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallItemClickListener;
 import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerAdapter;
 import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerView;
-import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerView.OnWaterfallItemClickListener;
-import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerView.WaterfallItemHandler;
 
 import android.os.Bundle;
 import android.view.View;
@@ -46,9 +46,11 @@ public class WaterfallPagerActivity extends Activity {
 		setContentView(R.layout.activity_waterfall_pager);
 		final WaterfallPagerView wfv=(WaterfallPagerView)findViewById(R.id.wfv);
 		setContentView(wfv);
-		wfv.createView(getView(200), new WaterfallItemHandler(){
+		wfv.createView(getView(200));//TODO: Simulating the process of creating header view
+		wfv.setWaterfallItemHandler(new WaterfallItemHandler(){
 			@Override
 			public View onCreateItemView(int position) {
+				//TODO: Simulating the process of creating item view
 				return getView(300+position*3);
 			}
 			@Override
@@ -75,7 +77,7 @@ public class WaterfallPagerActivity extends Activity {
 				Toast.makeText(WaterfallPagerActivity.this, ""+position, Toast.LENGTH_SHORT).show();
 			}
 		});
-		wfv.autoLoad(new WaterfallPagerAdapter<WaterfallBean>(this){
+		wfv.setWaterfallPagerAdapter(new WaterfallPagerAdapter(this){
 			private int i=0;
 			@Override
 			public void onFetchDataHttp(int currentPage, int currentStart) {
@@ -112,9 +114,9 @@ public class WaterfallPagerActivity extends Activity {
 				return 0;
 			}
 			@Override
-			public ArrayList<WaterfallBean> onReadDataSet(String data) {
+			public ArrayList<Serializable> onReadDataSet(String data) {
 				//TODO: Simulating the process of data parsing
-				ArrayList<WaterfallBean> list=new ArrayList<WaterfallBean>(); 
+				ArrayList<Serializable> list=new ArrayList<Serializable>(); 
 				for(int i=0;i<30;i++){
 					list.add(new WaterfallBean());
 				}
@@ -125,6 +127,7 @@ public class WaterfallPagerActivity extends Activity {
 				RLUiUtil.toast(WaterfallPagerActivity.this, "No more data.");
 			}
 		});
+		wfv.load();
 	}
 	
 	private View getView(int height){

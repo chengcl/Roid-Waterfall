@@ -16,11 +16,9 @@
 package com.rincliu.library.widget.view.waterfall.base;
 
 import java.util.ArrayList;
-
 import com.rincliu.library.R;
 import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshBase;
 import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshScrollView;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -37,6 +35,8 @@ public class WaterfallView extends PullToRefreshScrollView{
 	private SparseBooleanArray visibleArray=new SparseBooleanArray();
 	private static final long DELAY=300;
 	private boolean enableScrollBar=false;
+	private boolean hasCreated=false;
+	
 	private int columnCount=3;
 //	private int prevItemCount=10;
 //	private int nextItemCount=10;
@@ -46,6 +46,11 @@ public class WaterfallView extends PullToRefreshScrollView{
 	private ArrayList<LinearLayout> columnList=new ArrayList<LinearLayout>();
 	private Runnable scrollerTask;
 	private ScrollView sv;
+	
+	private OnWaterfallItemClickListener onWaterfallItemClickListener;
+	private OnWaterfallRefreshListener onWaterfallRefreshListener;
+	private OnWaterfallScrollListener onWaterfallScrollListener;
+	protected WaterfallItemHandler waterfallItemHandler;
 	
 	/**
 	 * 
@@ -132,8 +137,6 @@ public class WaterfallView extends PullToRefreshScrollView{
 	    });
 	}
 	
-	private boolean hasCreated=false;
-	
 	/**
 	 * 
 	 * @param header
@@ -204,8 +207,8 @@ public class WaterfallView extends PullToRefreshScrollView{
 		view.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View view) {
-				if(waterfallItemHandler!=null){
-					waterfallItemHandler.onItemClick(view, (Integer)view.getTag());
+				if(onWaterfallItemClickListener!=null){
+					onWaterfallItemClickListener.onItemClick(view, (Integer)view.getTag());
 				}
 			}
 		});
@@ -248,7 +251,17 @@ public class WaterfallView extends PullToRefreshScrollView{
 		sv.fullScroll(View.FOCUS_DOWN);
 	}
 	
-	private OnWaterfallRefreshListener onWaterfallRefreshListener;
+	public interface OnWaterfallItemClickListener{
+		public void onItemClick(View view, int position);
+	}
+	
+	/**
+	 * 
+	 * @param onWaterfallItemClickListener
+	 */
+	public void setOnWaterfallItemClickListener(OnWaterfallItemClickListener onWaterfallItemClickListener) {
+		this.onWaterfallItemClickListener = onWaterfallItemClickListener;
+	}
 	
 	public interface OnWaterfallRefreshListener{
 		public void onRefresh();
@@ -262,28 +275,12 @@ public class WaterfallView extends PullToRefreshScrollView{
 		this.onWaterfallRefreshListener=onWaterfallRefreshListener;
 	}
 	
-	private OnWaterfallScrollListener onWaterfallScrollListener;
-	
-	public interface OnWaterfallScrollListener {
-		public void onScrollToTop();
-		public void onScrollToBottom();
-		public void onScrollStop();
-	}
-	
 	/**
 	 * 
 	 * @param onWaterfallScrollListener
 	 */
 	public void setOnWaterfallScrollListener(OnWaterfallScrollListener onWaterfallScrollListener){
 		this.onWaterfallScrollListener=onWaterfallScrollListener;
-	}
-	
-	private WaterfallItemHandler waterfallItemHandler; 
-	
-	public interface WaterfallItemHandler {
-		public void onItemClick(View view, int position);
-		public void onItemVisible(View view, int position);
-		public void onItemInvisible(View view, int position);
 	}
 	
 	/**
@@ -322,6 +319,9 @@ public class WaterfallView extends PullToRefreshScrollView{
 	
 	private boolean isScrollViewItemVisible(ScrollView sv, int position){
 		View item=findViewWithTag(position);
+		if(item==null){
+			return false;
+		}
 		Rect scrollBounds = new Rect();
 		sv.getHitRect(scrollBounds);
 		return item.getLocalVisibleRect(scrollBounds);

@@ -21,15 +21,15 @@ import java.util.ArrayList;
 import com.rincliu.library.app.RLAsyncTask;
 import com.rincliu.library.app.RLAsyncTask.Status;
 import com.rincliu.library.util.RLUiUtil;
-import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerView.OnWaterfallRefreshListener;
-import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerView.OnWaterfallScrollListener;
+import com.rincliu.library.widget.view.waterfall.base.OnWaterfallScrollListener;
+import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallRefreshListener;
 
 import android.content.Context;
 
-public abstract class WaterfallPagerAdapter<T extends Serializable> {
+public abstract class WaterfallPagerAdapter{
 	private final Object obj=new Object();
-	private ArrayList<T> list=new ArrayList<T>();
-	private ArrayList<T> tmpList;
+	private ArrayList<Serializable> list=new ArrayList<Serializable>();
+	private ArrayList<Serializable> tmpList;
 	private boolean hasFetchedData=false;
 	private boolean isReset=false;
 	private String data=null;
@@ -121,7 +121,7 @@ public abstract class WaterfallPagerAdapter<T extends Serializable> {
 	 * 
 	 * @return
 	 */
-	public ArrayList<T> getDataSet(){
+	public ArrayList<Serializable> getDataSet(){
 		return list;
 	}
 	
@@ -129,7 +129,7 @@ public abstract class WaterfallPagerAdapter<T extends Serializable> {
 	 * 
 	 * @param list
 	 */
-	public void setDataSet(ArrayList<T> list){
+	public void setDataSet(ArrayList<Serializable> list){
 		this.list=list;
 	}
 	
@@ -169,7 +169,7 @@ public abstract class WaterfallPagerAdapter<T extends Serializable> {
 	
 	public abstract int onReadNextStart(String data);
 	
-	public abstract ArrayList<T> onReadDataSet(String data);
+	public abstract ArrayList<Serializable> onReadDataSet(String data);
 	
 	public abstract void onAlertNoMore();
 	
@@ -235,17 +235,17 @@ public abstract class WaterfallPagerAdapter<T extends Serializable> {
    				if(list!=null){
    					list.clear();
    				}else{
-   					list=new ArrayList<T>();
+   					list=new ArrayList<Serializable>();
    				}
    				wfv.removeAllItems();
    			}
    			start=onReadNextStart(data);
    			if(list==null){
-				list=new ArrayList<T>();
+				list=new ArrayList<Serializable>();
 			}
 			for(int i=0;i<tmpList.size();i++){
 				list.add(tmpList.get(i));
-				wfv.addItem(wfv.waterfallItemHandler.onCreateItemView(list.size()-1));
+				wfv.addItem(wfv.getWaterfallItemHandler().onCreateItemView(list.size()-1));
 			}
 			hasMore=onCheckHasMore(data);
    		}else{

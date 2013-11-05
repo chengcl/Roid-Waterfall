@@ -16,10 +16,11 @@
 package com.rincliu.library.widget.view.waterfall.activity;
 
 import com.rincliu.library.R;
+import com.rincliu.library.widget.view.waterfall.base.OnWaterfallScrollListener;
+import com.rincliu.library.widget.view.waterfall.base.WaterfallItemHandler;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallView;
+import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallItemClickListener;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallRefreshListener;
-import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallScrollListener;
-import com.rincliu.library.widget.view.waterfall.base.WaterfallView.WaterfallItemHandler;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,7 +44,7 @@ public class WaterfallActivity extends Activity {
 		setContentView(R.layout.activity_waterfall);
 		final WaterfallView wfv=(WaterfallView)findViewById(R.id.wfv);
 		setContentView(wfv);
-		wfv.createView(getView(200, true));
+		wfv.createView(getView(200, true));//TODO: Simulating the process of creating header view
 		wfv.setOnWaterfallScrollListener(new OnWaterfallScrollListener(){
 			@Override
 			public void onScrollToTop() {
@@ -76,8 +77,9 @@ public class WaterfallActivity extends Activity {
 		});
 		wfv.setWaterfallItemHandler(new WaterfallItemHandler(){
 			@Override
-			public void onItemClick(View view, int position) {
-				Toast.makeText(WaterfallActivity.this, ""+position, Toast.LENGTH_SHORT).show();
+			public View onCreateItemView(int position) {
+				//TODO: Simulating the process of creating item view
+				return getView(300+position, false);
 			}
 			@Override
 			public void onItemVisible(View view, int position) {
@@ -95,6 +97,12 @@ public class WaterfallActivity extends Activity {
 				//TODO: Simulating the process of image recycle
 				ImageView iv=(ImageView)view;
 				iv.setImageDrawable(new ColorDrawable(Color.LTGRAY));
+			}
+		});
+		wfv.setOnWaterfallItemClickListener(new OnWaterfallItemClickListener(){
+			@Override
+			public void onItemClick(View view, int position) {
+				Toast.makeText(WaterfallActivity.this, ""+position, Toast.LENGTH_SHORT).show();
 			}
 		});
 		wfv.setOnWaterfallRefreshListener(new OnWaterfallRefreshListener(){
