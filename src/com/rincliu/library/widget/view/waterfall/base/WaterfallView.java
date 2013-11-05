@@ -262,6 +262,10 @@ public class WaterfallView extends PullToRefreshScrollView{
 		LinearLayout column=columnList.get(index);
 		column.addView(view);
 		if(itemOrder==ItemOrder.SHORTEST_COLUMN_FIRST){
+			if(view.getLayoutParams()==null||view.getLayoutParams().height<=0){
+				throw new IllegalStateException(
+						"You should set layout params to the item view, especially the height.");
+			}
 			heightArray.put(index, heightArray.get(index)+view.getLayoutParams().height);
 		}
 		itemCount++;
@@ -386,8 +390,6 @@ public class WaterfallView extends PullToRefreshScrollView{
             });
 		}
 	}
-	
-	
 	
 	private boolean isScrollViewItemVisible(ScrollView sv, int position){
 		View item=findViewWithTag(position);
