@@ -31,7 +31,7 @@ public class WaterfallPagerAdapter{
 	private ArrayList<Serializable> list=new ArrayList<Serializable>();
 	private ArrayList<Serializable> tmpList;
 	private boolean hasFetchedData=false;
-	private boolean isReset=false;
+	private boolean isReset=true;
 	private boolean hasMore=true;
 	private String data=null;
 	private int start=0;
