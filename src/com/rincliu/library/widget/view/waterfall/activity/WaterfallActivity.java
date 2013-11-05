@@ -149,6 +149,8 @@ public class WaterfallActivity extends Activity {
 			iv.setImageDrawable(getWallpaper());
 		}
 		LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, height);
+		//If you called setItemOrder(ItemOrder.SHORTEST_COLUMN_FIRST),
+		//you should set layout parameters to the item, especially the height.
 		iv.setLayoutParams(lp);
 		iv.setPadding(6, 6, 6, 6);
 		return iv;

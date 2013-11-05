@@ -139,6 +139,8 @@ public class WaterfallPagerActivity extends Activity {
 		ImageView iv=new ImageView(this);
 		iv.setScaleType(ScaleType.FIT_XY);
 		iv.setImageDrawable(getWallpaper());
+		//If you called setItemOrder(ItemOrder.SHORTEST_COLUMN_FIRST),
+		//you should set layout parameters to the item, especially the height.
 		LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, height);
 		iv.setLayoutParams(lp);
 		iv.setPadding(6, 6, 6, 6);
