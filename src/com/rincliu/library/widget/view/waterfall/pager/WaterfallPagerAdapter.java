@@ -36,7 +36,7 @@ public class WaterfallPagerAdapter{
 	private String data=null;
 	private int start=0;
 	private int tmpStart=0;
-	private int currentPage=0;
+	private int currentPage= 0;
 	
 	private UpdateDataTask task;
 	private WaterfallPagerHandler waterfallPagerHandler;
@@ -92,7 +92,7 @@ public class WaterfallPagerAdapter{
 					executeTask();
 				}else{
 					if(!isReset){
-						wfv.stopRefresh();
+						wfv.stopRefresh(false);
 					}
 				}
 			}
@@ -179,12 +179,12 @@ public class WaterfallPagerAdapter{
 		}
 		@Override
 		protected void onCancelled(){
-			wfv.stopRefresh();
+			wfv.stopRefresh(false);
 			wfv.stopLoadMore();
 		}
 		@Override
 		protected void onCancelled(Void result){
-			wfv.stopRefresh();
+			wfv.stopRefresh(false);
 			wfv.stopLoadMore();
 		}
 		@Override
@@ -237,6 +237,11 @@ public class WaterfallPagerAdapter{
 				wfv.addItem(wfv.getWaterfallItemHandler().onCreateItemView(list.size()-1));
 			}
 			hasMore=waterfallPagerHandler.onCheckHasMore(data);
+			if(isReset){
+				wfv.stopRefresh(true);
+			}else{
+				wfv.stopLoadMore();
+			}
    		}else{
    			if(isReset){
    				start=tmpStart;
@@ -248,9 +253,12 @@ public class WaterfallPagerAdapter{
    					RLUiUtil.toast(mContext, errorStr);
    				}
    			}
+   			if(isReset){
+   				wfv.stopRefresh(false);
+   			}else{
+   				wfv.stopLoadMore();
+   			}
    		}
-		wfv.stopRefresh();
-		wfv.stopLoadMore();
 		isReset=false;
 	}
 }

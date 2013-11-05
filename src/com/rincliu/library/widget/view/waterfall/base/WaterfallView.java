@@ -185,12 +185,15 @@ public class WaterfallView extends PullToRefreshScrollView{
 	
 	/**
 	 * 
+	 * @param isSuccess
 	 */
-	public void stopRefresh(){
+	public void stopRefresh(boolean isSuccess){
 		super.setRefreshing(false);
 		super.onRefreshComplete();
 		super.setMode(Mode.PULL_FROM_START);
-		updateState();
+		if(isSuccess){
+			updateState();
+		}
 	}
 	
 	/**
@@ -299,12 +302,16 @@ public class WaterfallView extends PullToRefreshScrollView{
             		for(int i=0;i<itemCount;i++){
             			View item=findViewWithTag(i);
             			if(isScrollViewItemVisible(sv, i)){
+            				android.util.Log.d("@",i+"+");
         					if(!visibleArray.get(i)){
+        						android.util.Log.d("@",i+"++");
         						waterfallItemHandler.onItemVisible(item, i);
         						visibleArray.put(i, true);
         					}
         				}else{
+        					android.util.Log.d("@",i+"-");
         					if(visibleArray.get(i)){
+        						android.util.Log.d("@",i+"--");
         						waterfallItemHandler.onItemInvisible(item, i);
         						visibleArray.put(i, false);
         					}

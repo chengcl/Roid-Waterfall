@@ -122,7 +122,7 @@ public class WaterfallActivity extends Activity {
 								for(int i=200;i<400;i+=5){
 									wfv.addItem(getView(i, false));
 								}
-								wfv.stopRefresh();
+								wfv.stopRefresh(true);
 							}
 						});
 					}
@@ -133,7 +133,7 @@ public class WaterfallActivity extends Activity {
 		for(int i=200;i<400;i+=5){
 			wfv.addItem(getView(i, false));
 		}
-		wfv.stopRefresh();
+		wfv.stopRefresh(true);
 	}
 	
 	private static Handler handler=new Handler();
