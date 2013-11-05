@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import com.rincliu.library.R;
 import com.rincliu.library.util.RLUiUtil;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallItemHandler;
+import com.rincliu.library.widget.view.waterfall.base.WaterfallView.ItemOrder;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallItemClickListener;
 import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerAdapter;
 import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerHandler;
@@ -47,6 +48,7 @@ public class WaterfallPagerActivity extends Activity {
 		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_waterfall_pager);
 		wfv=(WaterfallPagerView)findViewById(R.id.wfv);
+		wfv.setItemOrder(ItemOrder.SHORTEST_COLUMN_FIRST);
 		setContentView(wfv);
 		wfv.createView(getView(200));//TODO: Simulating the process of creating header view
 		wfv.setWaterfallItemHandler(new WaterfallItemHandler(){

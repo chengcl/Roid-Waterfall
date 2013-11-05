@@ -26,6 +26,7 @@ import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.SparseBooleanArray;
+import android.util.SparseIntArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -35,6 +36,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 	private Context context;
 	
 	private SparseBooleanArray visibleArray=new SparseBooleanArray();
+	private SparseIntArray heightArray=new SparseIntArray();
 	private static final long DELAY=300;
 	private boolean enableScrollBar=false;
 	private boolean hasCreated=false;
@@ -53,6 +55,8 @@ public class WaterfallView extends PullToRefreshScrollView{
 	private OnWaterfallRefreshListener onWaterfallRefreshListener;
 	private OnWaterfallScrollListener onWaterfallScrollListener;
 	protected WaterfallItemHandler waterfallItemHandler;
+	
+	private ItemOrder itemOrder=ItemOrder.DEFAULT;
 	
 	/**
 	 * 
@@ -87,6 +91,18 @@ public class WaterfallView extends PullToRefreshScrollView{
 //		}
 		typedArray.recycle();
 		init();
+	}
+	
+	public enum ItemOrder{
+		DEFAULT, SHORTEST_COLUMN_FIRST
+	}
+	
+	/**
+	 * 
+	 * @param itemOrder
+	 */
+	public void setItemOrder(ItemOrder itemOrder){
+		this.itemOrder=itemOrder;
 	}
 	
 	private void init(){
@@ -162,6 +178,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 			column.setLayoutParams(lp);
 			columnList.add(column);
 			container.addView(column);
+			heightArray.put(i, 0);
 		}
 		root.addView(container);
 		sv.addView(root);
@@ -238,9 +255,29 @@ public class WaterfallView extends PullToRefreshScrollView{
 				}
 			}
 		});
-		int x=itemCount%columnCount;
-		columnList.get(x).addView(view);
+		int index=itemCount%columnCount;
+		if(itemOrder==ItemOrder.SHORTEST_COLUMN_FIRST){
+			index=getShortestColumn();
+		}
+		LinearLayout column=columnList.get(index);
+		column.addView(view);
+		if(itemOrder==ItemOrder.SHORTEST_COLUMN_FIRST){
+			heightArray.put(index, heightArray.get(index)+view.getLayoutParams().height);
+		}
 		itemCount++;
+	}
+	
+	private int getShortestColumn(){
+		int index=0;
+		int minHeight=heightArray.get(0);
+		for(int i=1;i<heightArray.size();i++){
+			int tmp=heightArray.get(i);
+			if(tmp<minHeight){
+				minHeight=tmp;
+				index=i;
+			}
+		}
+		return index;
 	}
 	
 	/**
