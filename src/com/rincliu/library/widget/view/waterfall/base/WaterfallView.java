@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.SparseBooleanArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -33,6 +34,7 @@ import android.widget.ScrollView;
 public class WaterfallView extends PullToRefreshScrollView{
 	private Context context;
 	
+	private SparseBooleanArray visibleArray=new SparseBooleanArray();
 	private static final long DELAY=300;
 	private boolean enableScrollBar=false;
 	private int columnCount=3;
@@ -176,7 +178,6 @@ public class WaterfallView extends PullToRefreshScrollView{
 		super.setRefreshing(false);
 		super.onRefreshComplete();
 		super.setMode(Mode.PULL_FROM_START);
-		updateState();
 	}
 	
 	/**
@@ -199,6 +200,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 			throw new IllegalStateException("The method createView() should be called first");
 		}
 		view.setTag(itemCount);
+		visibleArray.put(itemCount, false); 
 		view.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View view) {
@@ -299,10 +301,16 @@ public class WaterfallView extends PullToRefreshScrollView{
             	public void run(){
             		for(int i=0;i<itemCount;i++){
             			View item=findViewWithTag(i);
-        				if(isScrollViewItemVisible(sv, i)){
-        					waterfallItemHandler.onItemVisible(item, i);
+            			if(isScrollViewItemVisible(sv, i)){
+        					if(!visibleArray.get(i)){
+        						waterfallItemHandler.onItemVisible(item, i);
+        						visibleArray.put(i, true);
+        					}
         				}else{
-        					waterfallItemHandler.onItemInvisible(item, i);
+        					if(visibleArray.get(i)){
+        						waterfallItemHandler.onItemInvisible(item, i);
+        						visibleArray.put(i, false);
+        					}
         				}
         			}
             	}
