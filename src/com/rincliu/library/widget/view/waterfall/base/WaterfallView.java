@@ -18,19 +18,18 @@ package com.rincliu.library.widget.view.waterfall.base;
 import java.util.ArrayList;
 
 import com.rincliu.library.R;
+import com.rincliu.library.widget.RLScrollView;
 import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshBase;
 import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshScrollView;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 public class WaterfallView extends PullToRefreshScrollView{
 	private Context context;
@@ -49,7 +48,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 	
 	private ArrayList<LinearLayout> columnList=new ArrayList<LinearLayout>();
 	private Runnable scrollerTask;
-	private ScrollView sv;
+	private RLScrollView sv;
 	
 	private OnWaterfallItemClickListener onWaterfallItemClickListener;
 	private OnWaterfallRefreshListener onWaterfallRefreshListener;
@@ -108,16 +107,16 @@ public class WaterfallView extends PullToRefreshScrollView{
 	private void init(){
 		super.setMode(Mode.PULL_FROM_START);
 		super.setShowViewWhileRefreshing(true);
-		super.setOnRefreshListener(new OnRefreshListener<ScrollView>(){
+		super.setOnRefreshListener(new OnRefreshListener<RLScrollView>(){
 			@Override
-			public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+			public void onPullDownToRefresh(PullToRefreshBase<RLScrollView> refreshView) {
 				if(onWaterfallRefreshListener!=null){
 					setRefreshing(true);
 					onWaterfallRefreshListener.onRefresh();
 				}
 			}
 			@Override
-			public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+			public void onPullUpToRefresh(PullToRefreshBase<RLScrollView> refreshView) {
 			}
 		});
 		sv=super.getRefreshableView();
@@ -129,10 +128,10 @@ public class WaterfallView extends PullToRefreshScrollView{
 	            if(currentScroll==newScroll){
 	                if(onWaterfallScrollListener!=null){
 	                    onWaterfallScrollListener.onScrollStop();
-	                    if(isScrollViewTop(sv)){
+	                    if(sv.isAtTop()){
 	                    	onWaterfallScrollListener.onScrollToTop();
 	            		}
-	                    if(isScrollViewBottom(sv)){
+	                    if(sv.isAtBottom()){
 	            	    	onWaterfallScrollListener.onScrollToBottom();
 	            	    }
 	                }
@@ -372,7 +371,7 @@ public class WaterfallView extends PullToRefreshScrollView{
             						visibleArray.put(i, false);
             					}
                 			}else{
-                				if(isScrollViewItemVisible(sv, i)){
+                				if(sv.isChildVisible(findViewWithTag(i))){
                 					if(!visibleArray.get(i)){
                 						waterfallItemHandler.onItemVisible(item, i);
                 						visibleArray.put(i, true);
@@ -389,24 +388,5 @@ public class WaterfallView extends PullToRefreshScrollView{
             	}
             });
 		}
-	}
-	
-	private boolean isScrollViewItemVisible(ScrollView sv, int position){
-		View item=findViewWithTag(position);
-		if(item==null){
-			return false;
-		}
-		Rect scrollBounds = new Rect();
-		sv.getHitRect(scrollBounds);
-		return item.getLocalVisibleRect(scrollBounds);
-	}
-	
-	private boolean isScrollViewTop(ScrollView sv){
-		return sv.getScrollY()<=0;
-	}
-	
-	private boolean isScrollViewBottom(ScrollView sv){
-		return sv.getChildAt(sv.getChildCount()-1).getBottom()+sv.getPaddingBottom()
-				==sv.getHeight()+sv.getScrollY();
 	}
 }
