@@ -16,7 +16,7 @@
 package com.rincliu.library.widget.view.waterfall.activity;
 
 import com.rincliu.library.R;
-import com.rincliu.library.widget.RLScrollView.OnScrollListener;
+import com.rincliu.library.widget.view.waterfall.base.OnWaterfallScrollListener;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallItemHandler;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallView;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallView.ItemOrder;
@@ -48,10 +48,7 @@ public class WaterfallActivity extends Activity {
 		setContentView(wfv);
 		wfv.createView(getView(200, true));//TODO: Simulating the process of creating header view
 		wfv.setItemOrder(ItemOrder.SHORTEST_COLUMN_FIRST);
-		wfv.setOnWaterfallScrollListener(new OnScrollListener(){
-			@Override
-			public void onScrollChanged(int x, int y, int oldxX, int oldY) {
-			}
+		wfv.setOnWaterfallScrollListener(new OnWaterfallScrollListener(){
 			@Override
 			public void onScrollStopped() {
 				wfv.updateState(false);//Do not forget to update the items' state.

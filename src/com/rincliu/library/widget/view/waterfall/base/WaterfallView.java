@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 import com.rincliu.library.R;
 import com.rincliu.library.widget.RLScrollView;
-import com.rincliu.library.widget.RLScrollView.OnScrollListener;
 import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshBase;
 import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshScrollView;
 
@@ -28,6 +27,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -49,9 +49,14 @@ public class WaterfallView extends PullToRefreshScrollView{
 	
 	private OnWaterfallItemClickListener onWaterfallItemClickListener;
 	private OnWaterfallRefreshListener onWaterfallRefreshListener;
+	private OnWaterfallScrollListener onWaterfallScrollListener;
 	protected WaterfallItemHandler waterfallItemHandler;
 	
 	private ItemOrder itemOrder=ItemOrder.DEFAULT;
+	
+	private Runnable scrollerTask;
+	private static final long DELAY=300;
+	private int currentScroll=0;
 	
 	/**
 	 * 
@@ -117,23 +122,36 @@ public class WaterfallView extends PullToRefreshScrollView{
 		});
 		sv=super.getRefreshableView();
 		sv.setVerticalScrollBarEnabled(enableScrollBar);
-	    sv.setOnScrollListener(new OnScrollListener(){
+		scrollerTask = new Runnable() {
 			@Override
-			public void onScrollChanged(int x, int y, int oldxX, int oldY) {
-				// TODO Auto-generated method stub
-			}
+	        public void run() {
+	            int newScroll = sv.getScrollY();
+	            if(currentScroll==newScroll){
+					if(onWaterfallScrollListener!=null){
+	                    onWaterfallScrollListener.onScrollStopped();
+	                    if(sv.isAtTop()){
+	                    	onWaterfallScrollListener.onScrollStoppedAtTop();
+	            		}
+	                    if(sv.isAtBottom()){
+	            	    	onWaterfallScrollListener.onScrollStoppedAtBottom();
+	            	    }
+	                }
+	                updateState(false);
+				}else{
+	                currentScroll=sv.getScrollY();
+	                postDelayed(scrollerTask, DELAY);
+	            }
+	        }
+	    };
+	    sv.setOnTouchListener(new OnTouchListener(){
 			@Override
-			public void onScrollStopped() {
-				updateState(false);
-			}
-			@Override
-			public void onScrollStoppedAtTop() {
-				// TODO Auto-generated method stub
-			}
-			@Override
-			public void onScrollStoppedAtBottom() {
-				// TODO Auto-generated method stub
-			}
+			public boolean onTouch(View v, MotionEvent event) {
+	            if (event.getAction() == MotionEvent.ACTION_UP) {
+	            	currentScroll = sv.getScrollY();
+	                postDelayed(scrollerTask, DELAY);
+	            }
+	            return false;
+	        }
 	    });
 	}
 	
@@ -328,10 +346,8 @@ public class WaterfallView extends PullToRefreshScrollView{
 	 * 
 	 * @param onWaterfallScrollListener
 	 */
-	public void setOnWaterfallScrollListener(OnScrollListener onScrollListener){
-		if(sv!=null){
-			sv.setOnScrollListener(onScrollListener);
-		}
+	public void setOnWaterfallScrollListener(OnWaterfallScrollListener onWaterfallScrollListener){
+		this.onWaterfallScrollListener=onWaterfallScrollListener;
 	}
 	
 	/**

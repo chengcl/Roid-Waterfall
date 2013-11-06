@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import com.rincliu.library.app.RLAsyncTask;
 import com.rincliu.library.app.RLAsyncTask.Status;
 import com.rincliu.library.util.RLUiUtil;
-import com.rincliu.library.widget.RLScrollView.OnScrollListener;
+import com.rincliu.library.widget.view.waterfall.base.OnWaterfallScrollListener;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallRefreshListener;
 
 import android.content.Context;
@@ -56,11 +56,7 @@ public class WaterfallPagerAdapter{
 	
 	void setWaterfallView(WaterfallPagerView waterfall){
 		this.wfv=waterfall;
-		wfv.setOnWaterfallScrollListener(new OnScrollListener(){
-			@Override
-			public void onScrollChanged(int x, int y, int oldxX, int oldY) {
-				// TODO Auto-generated method stub
-			}
+		wfv.setOnWaterfallScrollListener(new OnWaterfallScrollListener(){
 			@Override
 			public void onScrollStopped() {
 				wfv.updateState(false);
