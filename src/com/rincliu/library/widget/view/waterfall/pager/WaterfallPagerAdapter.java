@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import com.rincliu.library.app.RLAsyncTask;
 import com.rincliu.library.app.RLAsyncTask.Status;
 import com.rincliu.library.util.RLUiUtil;
-import com.rincliu.library.widget.view.waterfall.base.OnWaterfallScrollListener;
+import com.rincliu.library.widget.RLScrollView.OnScrollListener;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallRefreshListener;
 
 import android.content.Context;
@@ -56,12 +56,21 @@ public class WaterfallPagerAdapter{
 	
 	void setWaterfallView(WaterfallPagerView waterfall){
 		this.wfv=waterfall;
-		wfv.setOnWaterfallScrollListener(new OnWaterfallScrollListener(){
+		wfv.setOnWaterfallScrollListener(new OnScrollListener(){
 			@Override
-			public void onScrollToTop() {
+			public void onScrollChanged(int x, int y, int oldxX, int oldY) {
+				// TODO Auto-generated method stub
 			}
 			@Override
-			public void onScrollToBottom() {
+			public void onScrollStopped() {
+				wfv.updateState(false);
+			}
+			@Override
+			public void onScrollStoppedAtTop() {
+				// TODO Auto-generated method stub
+			}
+			@Override
+			public void onScrollStoppedAtBottom() {
 				if(task.getStatus()==Status.FINISHED){
 					if(hasMore){
 						isReset=false;
@@ -76,9 +85,6 @@ public class WaterfallPagerAdapter{
 						wfv.stopLoadMore();
 					}
 				}
-			}
-			@Override
-			public void onScrollStop() {
 			}
 		});
 		wfv.setOnWaterfallRefreshListener(new OnWaterfallRefreshListener(){

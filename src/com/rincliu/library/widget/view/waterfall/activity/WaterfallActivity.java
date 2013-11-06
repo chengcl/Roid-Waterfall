@@ -16,7 +16,7 @@
 package com.rincliu.library.widget.view.waterfall.activity;
 
 import com.rincliu.library.R;
-import com.rincliu.library.widget.view.waterfall.base.OnWaterfallScrollListener;
+import com.rincliu.library.widget.RLScrollView.OnScrollListener;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallItemHandler;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallView;
 import com.rincliu.library.widget.view.waterfall.base.WaterfallView.ItemOrder;
@@ -48,12 +48,19 @@ public class WaterfallActivity extends Activity {
 		setContentView(wfv);
 		wfv.createView(getView(200, true));//TODO: Simulating the process of creating header view
 		wfv.setItemOrder(ItemOrder.SHORTEST_COLUMN_FIRST);
-		wfv.setOnWaterfallScrollListener(new OnWaterfallScrollListener(){
+		wfv.setOnWaterfallScrollListener(new OnScrollListener(){
 			@Override
-			public void onScrollToTop() {
+			public void onScrollChanged(int x, int y, int oldxX, int oldY) {
 			}
 			@Override
-			public void onScrollToBottom() {
+			public void onScrollStopped() {
+				wfv.updateState(false);//Do not forget to update the items' state.
+			}
+			@Override
+			public void onScrollStoppedAtTop() {
+			}
+			@Override
+			public void onScrollStoppedAtBottom() {
 				wfv.startLoadMore();
 				//TODO: Simulating the process of loading more data
 				new Thread(){
@@ -73,9 +80,6 @@ public class WaterfallActivity extends Activity {
 						});
 					}
 				}.start();
-			}
-			@Override
-			public void onScrollStop() {
 			}
 		});
 		wfv.setWaterfallItemHandler(new WaterfallItemHandler(){
