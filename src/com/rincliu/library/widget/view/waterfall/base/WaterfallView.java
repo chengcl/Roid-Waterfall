@@ -296,10 +296,13 @@ public class WaterfallView extends PullToRefreshScrollView{
 			if(waterfallItemHandler!=null){
 				waterfallItemHandler.onItemInvisible(item, i);
 			}
+			visibleArray.put(i, false);
 		}
+		visibleArray.clear();
 		for(int i=0;i<columnList.size();i++){
 			LinearLayout column=columnList.get(i);
 			column.removeAllViewsInLayout();
+			heightArray.put(i, 0);
 		}
 		itemCount=0;
 	}
