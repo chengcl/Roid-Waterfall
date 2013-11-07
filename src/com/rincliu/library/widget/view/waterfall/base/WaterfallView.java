@@ -29,6 +29,7 @@ import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshScrollView;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
 import android.view.MotionEvent;
@@ -43,10 +44,13 @@ public class WaterfallView extends PullToRefreshScrollView{
 	private boolean enableScrollBar=false;
 	private boolean hasCreated=false;
 	
+	private static final long DELAY=100;
+	
 	private int columnCount=3;
 //	private int prevItemCount=10;
 //	private int nextItemCount=10;
 	private int itemCount=0;
+	private int currentScroll=0;
 	
 	private ArrayList<LinearLayout> columnList=new ArrayList<LinearLayout>();
 	private RLScrollView sv;
@@ -59,8 +63,8 @@ public class WaterfallView extends PullToRefreshScrollView{
 	private ItemOrder itemOrder=ItemOrder.DEFAULT;
 	
 	private Runnable scrollCheckTask, updateStateTask, resetStateTask;
-	private static final long DELAY=300;
-	private int currentScroll=0;
+	
+	private SparseArray<View> viewArray=new SparseArray<View>();
 	
 	/**
 	 * 
@@ -151,7 +155,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 	    	@Override
 	    	public void run(){
 	    		for(int i=0;i<itemCount;i++){
-        			View item=findViewWithTag(i);
+        			View item=viewArray.get(i);
         			if(item!=null){
         				if(sv.isChildVisible(item)){
         					if(!visibleArray.get(i)){
@@ -172,7 +176,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 			@Override
 			public void run() {
 				for(int i=0;i<itemCount;i++){
-        			View item=findViewWithTag(i);
+        			View item=viewArray.get(i);
         			if(item!=null){
         				if(visibleArray.get(i)){
     						waterfallItemHandler.onItemInvisible(item, i);
@@ -306,6 +310,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 		}
 		LinearLayout column=columnList.get(index);
 		column.addView(view);
+		viewArray.put(itemCount, view);
 		if(itemOrder==ItemOrder.SHORTEST_COLUMN_FIRST){
 			if(view.getLayoutParams()==null||view.getLayoutParams().height<=0){
 				throw new IllegalStateException(
@@ -337,12 +342,13 @@ public class WaterfallView extends PullToRefreshScrollView{
 			throw new IllegalStateException("The method createView() should be called first");
 		}
 		for(int i=0;i<itemCount;i++){
-			View item=findViewWithTag(i);
+			View item=viewArray.get(i);
 			if(waterfallItemHandler!=null){
 				waterfallItemHandler.onItemInvisible(item, i);
 			}
 			visibleArray.put(i, false);
 		}
+		viewArray.clear();
 		visibleArray.clear();
 		for(int i=0;i<columnList.size();i++){
 			LinearLayout column=columnList.get(i);
