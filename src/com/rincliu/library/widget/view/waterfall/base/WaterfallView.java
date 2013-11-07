@@ -48,7 +48,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 	private static final long DELAY=100;
 	
 	private int columnCount=3;
-	private int offsetPageCount=1, preLoadPageCount=2;
+	private int offsetPageCount=1, preLoadPageCount=1;
 	private int itemCount=0;
 	private int currentScroll=0;
 	
@@ -95,7 +95,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 			this.offsetPageCount=typedArray.getInteger(R.styleable.Waterfall_offsetPageCount, 1);
 		}
 		if(typedArray.hasValue(R.styleable.Waterfall_preLoadPageCount)) {
-			this.preLoadPageCount=typedArray.getInteger(R.styleable.Waterfall_preLoadPageCount, 2);
+			this.preLoadPageCount=typedArray.getInteger(R.styleable.Waterfall_preLoadPageCount, 1);
 		}
 		typedArray.recycle();
 		init();
