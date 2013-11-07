@@ -59,7 +59,7 @@ public class WaterfallPagerAdapter{
 		wfv.setOnWaterfallScrollListener(new OnWaterfallScrollListener(){
 			@Override
 			public void onScrollStopped() {
-				wfv.updateState(false);
+				// TODO Auto-generated method stub
 			}
 			@Override
 			public void onScrollStoppedAtTop() {
@@ -74,11 +74,11 @@ public class WaterfallPagerAdapter{
 						executeTask();
 					}else{
 						waterfallPagerHandler.onAlertNoMore();
-						wfv.stopLoadMore();
+						wfv.stopLoadMore(false);
 					}
 				}else{
 					if(isReset){
-						wfv.stopLoadMore();
+						wfv.stopLoadMore(false);
 					}
 				}
 			}
@@ -182,12 +182,12 @@ public class WaterfallPagerAdapter{
 		@Override
 		protected void onCancelled(){
 			wfv.stopRefresh(false);
-			wfv.stopLoadMore();
+			wfv.stopLoadMore(false);
 		}
 		@Override
 		protected void onCancelled(Void result){
 			wfv.stopRefresh(false);
-			wfv.stopLoadMore();
+			wfv.stopLoadMore(false);
 		}
 		@Override
 		protected void onProgressUpdate(Void ...values){
@@ -242,7 +242,7 @@ public class WaterfallPagerAdapter{
 			if(isReset){
 				wfv.stopRefresh(true);
 			}else{
-				wfv.stopLoadMore();
+				wfv.stopLoadMore(true);
 			}
    		}else{
    			if(isReset){
@@ -258,7 +258,7 @@ public class WaterfallPagerAdapter{
    			if(isReset){
    				wfv.stopRefresh(false);
    			}else{
-   				wfv.stopLoadMore();
+   				wfv.stopLoadMore(false);
    			}
    		}
 		isReset=false;

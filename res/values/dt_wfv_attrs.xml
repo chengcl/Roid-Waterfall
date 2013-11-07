@@ -3,7 +3,7 @@
     <declare-styleable name="Waterfall">
         <attr name="enableScrollBar" format="reference|boolean" />
         <attr name="columnCount" format="reference|integer" />
-        <attr name="prevItemCount" format="reference|integer" />
-        <attr name="nextItemCount" format="reference|integer" />
+        <attr name="offsetPageCount" format="reference|integer" />
+        <attr name="preLoadPageCount" format="reference|integer" />
     </declare-styleable>
 </resources>

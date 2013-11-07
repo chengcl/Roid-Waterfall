@@ -43,12 +43,12 @@ public class WaterfallView extends PullToRefreshScrollView{
 	private SparseIntArray heightArray=new SparseIntArray();
 	private boolean enableScrollBar=false;
 	private boolean hasCreated=false;
+	private boolean isReverse=false;
 	
 	private static final long DELAY=100;
 	
 	private int columnCount=3;
-//	private int prevItemCount=10;
-//	private int nextItemCount=10;
+	private int offsetPageCount=1, preLoadPageCount=2;
 	private int itemCount=0;
 	private int currentScroll=0;
 	
@@ -91,12 +91,12 @@ public class WaterfallView extends PullToRefreshScrollView{
 		if(typedArray.hasValue(R.styleable.Waterfall_columnCount)) {
 			this.columnCount=typedArray.getInteger(R.styleable.Waterfall_columnCount, 3);
 		}
-//		if(typedArray.hasValue(R.styleable.Waterfall_prevItemCount)) {
-//			this.prevItemCount=typedArray.getInteger(R.styleable.Waterfall_prevItemCount, 10);
-//		}
-//		if(typedArray.hasValue(R.styleable.Waterfall_nextItemCount)) {
-//			this.nextItemCount=typedArray.getInteger(R.styleable.Waterfall_nextItemCount, 10);
-//		}
+		if(typedArray.hasValue(R.styleable.Waterfall_offsetPageCount)) {
+			this.offsetPageCount=typedArray.getInteger(R.styleable.Waterfall_offsetPageCount, 1);
+		}
+		if(typedArray.hasValue(R.styleable.Waterfall_preLoadPageCount)) {
+			this.preLoadPageCount=typedArray.getInteger(R.styleable.Waterfall_preLoadPageCount, 2);
+		}
 		typedArray.recycle();
 		init();
 	}
@@ -144,34 +144,115 @@ public class WaterfallView extends PullToRefreshScrollView{
 	            	    	onWaterfallScrollListener.onScrollStoppedAtBottom();
 	            	    }
 	                }
-	                updateState(false);
+	                updateItemsState(isReverse);
 				}else{
+					isReverse=currentScroll>sv.getScrollY();
 	                currentScroll=sv.getScrollY();
 	                postDelayed(scrollCheckTask, DELAY);
 	            }
 	        }
 	    };
 	    updateStateTask=new Runnable(){
-	    	@Override
-	    	public void run(){
-	    		for(int i=0;i<itemCount;i++){
-        			View item=viewArray.get(i);
-        			if(item!=null){
-        				if(sv.isChildVisible(item)){
-        					if(!visibleArray.get(i)){
-        						waterfallItemHandler.onItemVisible(item, i);
-        						visibleArray.put(i, true);
-        					}
-        				}else{
-        					if(visibleArray.get(i)){
-        						waterfallItemHandler.onItemInvisible(item, i);
-        						visibleArray.put(i, false);
-        					}
-        				}
+        	@Override
+        	public void run(){
+        		if(isReverse){
+        			int firstVisible=-1, lastVisible=-1;
+        			for(int i=itemCount-1;i>=0;i--){
+        				View item=viewArray.get(i);
+            			if(item!=null){
+            				if(sv.isChildVisible(item)){
+            					if(firstVisible==-1){
+            						firstVisible=i;
+            						lastVisible=i;
+            					}else{
+            						lastVisible--;
+            					}
+            					if(!visibleArray.get(i)){
+            						waterfallItemHandler.onItemVisible(item, i);
+            						visibleArray.put(i, true);
+            					}
+            				}else{
+            					if(visibleArray.get(i)){
+            						waterfallItemHandler.onItemInvisible(item, i);
+            						visibleArray.put(i, false);
+            					}
+            				}
+            			}
         			}
-    			}
-	    	}
-	    };
+        			if(firstVisible>-1&&lastVisible>-1){
+            			int visibleCount=firstVisible-lastVisible+1;
+            			for(int i=firstVisible+1;i<=Math.min(firstVisible+offsetPageCount*visibleCount-1, itemCount-1);i++){
+            				View item=viewArray.get(i);
+                			if(item!=null){
+                				if(!visibleArray.get(i)){
+            						waterfallItemHandler.onItemVisible(item, i);
+            						visibleArray.put(i, true);
+            					}
+                			}
+            			}
+            			firstVisible=Math.max(lastVisible-1, 0);
+            			lastVisible=Math.max(lastVisible-(offsetPageCount+preLoadPageCount)*visibleCount, 0);
+            			for(int i=firstVisible;i>=lastVisible;i--){
+            				View item=viewArray.get(i);
+                			if(item!=null){
+                				if(!visibleArray.get(i)){
+            						waterfallItemHandler.onItemVisible(item, i);
+            						visibleArray.put(i, true);
+            					}
+                			}
+            			}
+            		}
+        			isReverse=false;
+        		}else{
+        			int firstVisible=-1, lastVisible=-1;
+            		for(int i=0;i<itemCount;i++){
+            			View item=viewArray.get(i);
+            			if(item!=null){
+            				if(sv.isChildVisible(item)){
+            					if(firstVisible==-1){
+            						firstVisible=i;
+            						lastVisible=i;
+            					}else{
+            						lastVisible++;
+            					}
+            					if(!visibleArray.get(i)){
+            						waterfallItemHandler.onItemVisible(item, i);
+            						visibleArray.put(i, true);
+            					}
+            				}else{
+            					if(visibleArray.get(i)){
+            						waterfallItemHandler.onItemInvisible(item, i);
+            						visibleArray.put(i, false);
+            					}
+            				}
+            			}
+        			}
+            		if(firstVisible>-1&&lastVisible>-1){
+            			int visibleCount=lastVisible-firstVisible+1;
+            			for(int i=firstVisible-1;i>Math.max(firstVisible-offsetPageCount*visibleCount+1, 0);i--){
+            				View item=viewArray.get(i);
+                			if(item!=null){
+                				if(!visibleArray.get(i)){
+            						waterfallItemHandler.onItemVisible(item, i);
+            						visibleArray.put(i, true);
+            					}
+                			}
+            			}
+            			firstVisible=Math.min(lastVisible+1, itemCount-1);
+            			lastVisible=Math.min(lastVisible+(offsetPageCount+preLoadPageCount)*visibleCount, itemCount-1);
+            			for(int i=firstVisible;i<=lastVisible;i++){
+            				View item=viewArray.get(i);
+                			if(item!=null){
+                				if(!visibleArray.get(i)){
+            						waterfallItemHandler.onItemVisible(item, i);
+            						visibleArray.put(i, true);
+            					}
+                			}
+            			}
+            		}
+        		}
+        	}
+        };
 	    resetStateTask=new Runnable(){
 			@Override
 			public void run() {
@@ -239,10 +320,13 @@ public class WaterfallView extends PullToRefreshScrollView{
 	/**
 	 * 
 	 */
-	public void stopLoadMore(){
+	public void stopLoadMore(boolean isSuccess){
 		super.setRefreshing(false);
 		super.onRefreshComplete();
 		super.setMode(Mode.PULL_FROM_START);
+		if(isSuccess){
+			updateItemsState(false);
+		}
 	}
 	
 	/**
@@ -260,7 +344,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 						+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.CHINA)
 						.format(new Date(System.currentTimeMillis())));
 			}
-			updateState(false);
+			updateItemsState(false);
 		}
 	}
 	
@@ -268,14 +352,14 @@ public class WaterfallView extends PullToRefreshScrollView{
 	 * 
 	 */
 	public void onActivityResume(){
-		updateState(false);
+		updateItemsState(false);
 	}
 	
 	/**
 	 * 
 	 */
 	public void onActivityPause(){
-		updateState(true);
+		resetItemsState();
 	}
 	
 	/**
@@ -414,11 +498,21 @@ public class WaterfallView extends PullToRefreshScrollView{
 	
 	/**
 	 * 
-	 * @param isReset
+	 * @param isReverse
 	 */
-	public void updateState(boolean isReset){
+	public void updateItemsState(boolean isReverse){
+		this.isReverse=isReverse;
 		if(waterfallItemHandler!=null){
-			post(isReset?resetStateTask:updateStateTask);
+			post(updateStateTask);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void resetItemsState(){
+		if(waterfallItemHandler!=null){
+			post(resetStateTask);
 		}
 	}
 }

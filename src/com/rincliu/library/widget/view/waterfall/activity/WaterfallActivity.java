@@ -51,7 +51,6 @@ public class WaterfallActivity extends Activity {
 		wfv.setOnWaterfallScrollListener(new OnWaterfallScrollListener(){
 			@Override
 			public void onScrollStopped() {
-				wfv.updateState(false);//Do not forget to update the items' state.
 			}
 			@Override
 			public void onScrollStoppedAtTop() {
@@ -72,7 +71,7 @@ public class WaterfallActivity extends Activity {
 								for(int i=300;i<500;i+=5){
 									wfv.addItem(getView(i, false));
 								}
-								wfv.stopLoadMore();
+								wfv.stopLoadMore(true);
 							}
 						});
 					}

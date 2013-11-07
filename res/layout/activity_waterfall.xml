@@ -5,5 +5,7 @@
         android:background="@android:color/white"
         app:enableScrollBar="false"
         app:columnCount="3"
+        app:offsetPageCount="1"
+        app:preLoadPageCount="2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
