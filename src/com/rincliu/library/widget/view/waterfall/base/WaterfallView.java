@@ -15,10 +15,14 @@
  */
 package com.rincliu.library.widget.view.waterfall.base;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import com.rincliu.library.R;
 import com.rincliu.library.widget.RLScrollView;
+import com.rincliu.library.widget.view.pulltorefresh.ILoadingLayout;
 import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshBase;
 import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshScrollView;
 
@@ -211,6 +215,12 @@ public class WaterfallView extends PullToRefreshScrollView{
 		super.onRefreshComplete();
 		super.setMode(Mode.PULL_FROM_START);
 		if(isSuccess){
+			ILoadingLayout layout=getLoadingLayoutProxy(true, false);
+			if(layout!=null){
+				layout.setLastUpdatedLabel(context.getString(R.string.ptr_updated_at)
+						+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.CHINA)
+						.format(new Date(System.currentTimeMillis())));
+			}
 			updateState(false);
 		}
 	}
