@@ -58,7 +58,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 	
 	private ItemOrder itemOrder=ItemOrder.DEFAULT;
 	
-	private Runnable scrollerTask;
+	private Runnable scrollCheckTask, updateStateTask, resetStateTask;
 	private static final long DELAY=300;
 	private int currentScroll=0;
 	
@@ -126,7 +126,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 		});
 		sv=super.getRefreshableView();
 		sv.setVerticalScrollBarEnabled(enableScrollBar);
-		scrollerTask = new Runnable() {
+		scrollCheckTask = new Runnable() {
 			@Override
 	        public void run() {
 	            int newScroll = sv.getScrollY();
@@ -143,16 +143,51 @@ public class WaterfallView extends PullToRefreshScrollView{
 	                updateState(false);
 				}else{
 	                currentScroll=sv.getScrollY();
-	                postDelayed(scrollerTask, DELAY);
+	                postDelayed(scrollCheckTask, DELAY);
 	            }
 	        }
+	    };
+	    updateStateTask=new Runnable(){
+	    	@Override
+	    	public void run(){
+	    		for(int i=0;i<itemCount;i++){
+        			View item=findViewWithTag(i);
+        			if(item!=null){
+        				if(sv.isChildVisible(item)){
+        					if(!visibleArray.get(i)){
+        						waterfallItemHandler.onItemVisible(item, i);
+        						visibleArray.put(i, true);
+        					}
+        				}else{
+        					if(visibleArray.get(i)){
+        						waterfallItemHandler.onItemInvisible(item, i);
+        						visibleArray.put(i, false);
+        					}
+        				}
+        			}
+    			}
+	    	}
+	    };
+	    resetStateTask=new Runnable(){
+			@Override
+			public void run() {
+				for(int i=0;i<itemCount;i++){
+        			View item=findViewWithTag(i);
+        			if(item!=null){
+        				if(visibleArray.get(i)){
+    						waterfallItemHandler.onItemInvisible(item, i);
+    						visibleArray.put(i, false);
+    					}
+        			}
+				}
+			}
 	    };
 	    sv.setOnTouchListener(new OnTouchListener(){
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 	            if (event.getAction() == MotionEvent.ACTION_UP) {
 	            	currentScroll = sv.getScrollY();
-	                postDelayed(scrollerTask, DELAY);
+	                postDelayed(scrollCheckTask, DELAY);
 	            }
 	            return false;
 	        }
@@ -375,36 +410,9 @@ public class WaterfallView extends PullToRefreshScrollView{
 	 * 
 	 * @param isReset
 	 */
-	public void updateState(final boolean isReset){
+	public void updateState(boolean isReset){
 		if(waterfallItemHandler!=null){
-			post(new Runnable(){
-            	@Override
-            	public void run(){
-            		for(int i=0;i<itemCount;i++){
-            			View item=findViewWithTag(i);
-            			if(item!=null){
-            				if(isReset){
-                				if(visibleArray.get(i)){
-            						waterfallItemHandler.onItemInvisible(item, i);
-            						visibleArray.put(i, false);
-            					}
-                			}else{
-                				if(sv.isChildVisible(findViewWithTag(i))){
-                					if(!visibleArray.get(i)){
-                						waterfallItemHandler.onItemVisible(item, i);
-                						visibleArray.put(i, true);
-                					}
-                				}else{
-                					if(visibleArray.get(i)){
-                						waterfallItemHandler.onItemInvisible(item, i);
-                						visibleArray.put(i, false);
-                					}
-                				}
-                			}
-            			}
-        			}
-            	}
-            });
+			post(isReset?resetStateTask:updateStateTask);
 		}
 	}
 }
