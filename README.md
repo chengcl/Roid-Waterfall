@@ -38,7 +38,7 @@
         app:preLoadPageCount="2"/>
 ```
 
-* 如果设置Item排列方式为SHORTEST_COLUMN_FIRST，则在初始化Item时，必须指定其View的LayoutParams，尤其是height列:
+* 如果设置Item排列方式为SHORTEST_COLUMN_FIRST，则在初始化Item时，必须指定其View的LayoutParams，尤其是height:
 
 ```java
 ...
