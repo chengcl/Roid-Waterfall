@@ -48,9 +48,6 @@ wfv.setWaterfallItemHandler(new WaterfallItemHandler(){
 		//TODO: Simulating the process of creating item view
 		ImageView iv=new ImageView(this);
 		iv.setScaleType(ScaleType.FIT_XY);
-		if(isHeader){
-			 iv.setImageDrawable(getWallpaper());
-		}
 		int height=200, padding=5;
 		LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, height);
 		iv.setLayoutParams(lp);
