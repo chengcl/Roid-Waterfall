@@ -20,5 +20,22 @@ Android平台类似Pinterest瀑布流展示效果的组件，支持多列和分�
 
 ### 使用注意
 * 本项目中的下拉刷新特性引用了[Roid-lib-Rinc](https://github.com/RincLiu/roid-lib-rinc)项目中的[PullToRefreshScrollView](https://github.com/RincLiu/roid-lib-rinc/blob/master/src/com/rincliu/library/widget/view/pulltorefresh/PullToRefreshScrollView.java)及其他类，需要将该项目作为Library引用进来，当然也可以只将相关代码拷贝进来；
-* 使用XML布局时，只能包含WaterfallView一个元素（即不能嵌套在任何其他组件或布局内，PullToRefreshScrollView的基类及其派生类都不允许指定parent）；
-* 如果设置Item排列方式为SHORTEST_COLUMN_FIRST，则在初始化Item时，必须指定其View的LayoutParams，尤其是height，否则仍会按默认方式排列。
+* 使用XML布局时，只能包含WaterfallView一个元素（即不能嵌套在任何其他组件或布局内，PullToRefreshScrollView的基类及其派生类都不允许指定parent）:
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerView 
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res/com.rincliu.library"
+        android:id="@+id/wfv"
+        android:padding="3dp"
+        android:background="@android:color/white"
+        app:enableScrollBar="false"
+        app:columnCount="3"
+        app:offsetPageCount="1"
+        app:preLoadPageCount="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+```
+
+* 如果设置Item排列方式为SHORTEST_COLUMN_FIRST，则在初始化Item时，必须指定其View的LayoutParams，尤其是height列。
