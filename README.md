@@ -20,7 +20,7 @@
 使用注意
 ==========
 * 本项目中的下拉刷新特性引用了[Roid-lib-Rinc](https://github.com/RincLiu/roid-lib-rinc)项目中的[PullToRefreshScrollView](https://github.com/RincLiu/roid-lib-rinc/blob/master/src/com/rincliu/library/widget/view/pulltorefresh/PullToRefreshScrollView.java)及其他类，需要将该项目作为Library引用进来，当然也可以只将相关代码拷贝进来；
-* 使用XML布局时，只能包含WaterfallView一个元素（即不能嵌套在任何其他组件或布局内，PullToRefreshScrollView的基类及其派生类都不允许指定parent）:
+* 使用XML布局时，只能包含WaterfallView一个元素（即不能嵌套在任何其他组件或布局内，因为PullToRefreshScrollView的基类及其派生类都不允许指定parent）:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
