@@ -48,6 +48,8 @@ wfv.setWaterfallItemHandler(new WaterfallItemHandler(){
 		//TODO: Simulating the process of creating item view
 		ImageView iv=new ImageView(this);
 		iv.setScaleType(ScaleType.FIT_XY);
+		//If you called setItemOrder(ItemOrder.SHORTEST_COLUMN_FIRST),
+		//you should set layout parameters to the item, especially the height.
 		int height=200, padding=5;
 		LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, height);
 		iv.setLayoutParams(lp);
