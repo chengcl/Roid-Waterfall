@@ -22,7 +22,7 @@ Android平台类似Pinterest瀑布流展示效果的组件，支持多列和分�
 * 本项目中的下拉刷新特性引用了[Roid-lib-Rinc](https://github.com/RincLiu/roid-lib-rinc)项目中的[PullToRefreshScrollView](https://github.com/RincLiu/roid-lib-rinc/blob/master/src/com/rincliu/library/widget/view/pulltorefresh/PullToRefreshScrollView.java)及其他类，需要将该项目作为Library引用进来，当然也可以只将相关代码拷贝进来；
 * 使用XML布局时，只能包含WaterfallView一个元素（即不能嵌套在任何其他组件或布局内，PullToRefreshScrollView的基类及其派生类都不允许指定parent）:
 
-```
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerView 
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,4 +38,41 @@ Android平台类似Pinterest瀑布流展示效果的组件，支持多列和分�
         android:layout_height="wrap_content"/>
 ```
 
-* 如果设置Item排列方式为SHORTEST_COLUMN_FIRST，则在初始化Item时，必须指定其View的LayoutParams，尤其是height列。
+* 如果设置Item排列方式为SHORTEST_COLUMN_FIRST，则在初始化Item时，必须指定其View的LayoutParams，尤其是height列:
+
+```java
+wfv.setItemOrder(ItemOrder.SHORTEST_COLUMN_FIRST);
+wfv.setWaterfallItemHandler(new WaterfallItemHandler(){
+	@Override
+	public View onCreateItemView(int position) {
+		//TODO: Simulating the process of creating item view
+		ImageView iv=new ImageView(this);
+		iv.setScaleType(ScaleType.FIT_XY);
+		if(isHeader){
+			 iv.setImageDrawable(getWallpaper());
+		}
+		int height=200, padding=5;
+		LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, height);
+		iv.setLayoutParams(lp);
+		iv.setPadding(padding, padding, padding, padding);
+		return iv;
+	}
+	@Override
+	public void onItemVisible(View view, int position) {
+		//TODO: Simulating the process of image loading
+		final ImageView iv=(ImageView)view;
+		wfv.postDelayed(new Runnable(){
+			@Override
+			public void run() {
+				iv.setImageDrawable(getWallpaper());
+			}
+		}, 300);
+	}
+	@Override
+	public void onItemInvisible(View view, int position) {
+		//TODO: Simulating the process of image recycle
+		ImageView iv=(ImageView)view;
+		iv.setImageDrawable(new ColorDrawable(Color.LTGRAY));
+	}
+});
+```
