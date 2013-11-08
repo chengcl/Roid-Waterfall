@@ -28,14 +28,14 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res/com.rincliu.library"
         android:id="@+id/wfv"
-        android:padding="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@android:color/white"
+        android:padding="3dp"
         app:enableScrollBar="false"
         app:columnCount="3"
         app:offsetPageCount="1"
-        app:preLoadPageCount="2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        app:preLoadPageCount="2"/>
 ```
 
 * 如果设置Item排列方式为SHORTEST_COLUMN_FIRST，则在初始化Item时，必须指定其View的LayoutParams，尤其是height列:
