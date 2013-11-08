@@ -41,6 +41,7 @@
 * 如果设置Item排列方式为SHORTEST_COLUMN_FIRST，则在初始化Item时，必须指定其View的LayoutParams，尤其是height列:
 
 ```java
+...
 wfv.setItemOrder(ItemOrder.SHORTEST_COLUMN_FIRST);
 wfv.setWaterfallItemHandler(new WaterfallItemHandler(){
 	@Override
@@ -56,22 +57,7 @@ wfv.setWaterfallItemHandler(new WaterfallItemHandler(){
 		iv.setPadding(padding, padding, padding, padding);
 		return iv;
 	}
-	@Override
-	public void onItemVisible(View view, int position) {
-		//TODO: Simulating the process of image loading
-		final ImageView iv=(ImageView)view;
-		wfv.postDelayed(new Runnable(){
-			@Override
-			public void run() {
-				iv.setImageDrawable(getWallpaper());
-			}
-		}, 300);
-	}
-	@Override
-	public void onItemInvisible(View view, int position) {
-		//TODO: Simulating the process of image recycle
-		ImageView iv=(ImageView)view;
-		iv.setImageDrawable(new ColorDrawable(Color.LTGRAY));
-	}
+	...
 });
+...
 ```
