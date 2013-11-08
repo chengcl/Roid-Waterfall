@@ -51,10 +51,8 @@ wfv.setWaterfallItemHandler(new WaterfallItemHandler(){
 		iv.setScaleType(ScaleType.FIT_XY);
 		//If you called setItemOrder(ItemOrder.SHORTEST_COLUMN_FIRST),
 		//you should set layout parameters to the item, especially the height.
-		int height=200, padding=5;
-		LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, height);
+		LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 100);
 		iv.setLayoutParams(lp);
-		iv.setPadding(padding, padding, padding, padding);
 		return iv;
 	}
 	...
