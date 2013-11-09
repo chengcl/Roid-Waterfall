@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.rincliu.library.widget.view.waterfall.pager;
+package com.rincliu.library.widget.waterfall.pager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import com.rincliu.library.app.RLAsyncTask;
 import com.rincliu.library.app.RLAsyncTask.Status;
 import com.rincliu.library.util.RLUiUtil;
-import com.rincliu.library.widget.view.waterfall.base.OnWaterfallScrollListener;
-import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallRefreshListener;
+import com.rincliu.library.widget.waterfall.base.OnWaterfallScrollListener;
+import com.rincliu.library.widget.waterfall.base.WaterfallView.OnWaterfallRefreshListener;
 
 import android.content.Context;
 

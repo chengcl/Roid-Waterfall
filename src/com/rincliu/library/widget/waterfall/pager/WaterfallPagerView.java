@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.rincliu.library.widget.view.waterfall.pager;
+package com.rincliu.library.widget.waterfall.pager;
 
-import com.rincliu.library.widget.view.waterfall.base.WaterfallItemHandler;
-import com.rincliu.library.widget.view.waterfall.base.WaterfallView;
+import com.rincliu.library.widget.waterfall.base.WaterfallItemHandler;
+import com.rincliu.library.widget.waterfall.base.WaterfallView;
 
 import android.content.Context;
 import android.util.AttributeSet;

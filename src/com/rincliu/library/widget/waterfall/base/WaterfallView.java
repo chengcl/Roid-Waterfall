@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.rincliu.library.widget.view.waterfall.base;
+package com.rincliu.library.widget.waterfall.base;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,10 +21,10 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.rincliu.library.R;
-import com.rincliu.library.widget.view.RLScrollView;
-import com.rincliu.library.widget.view.pulltorefresh.ILoadingLayout;
-import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshBase;
-import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshScrollView;
+import com.rincliu.library.widget.RLScrollView;
+import com.rincliu.library.widget.pulltorefresh.ILoadingLayout;
+import com.rincliu.library.widget.pulltorefresh.PullToRefreshBase;
+import com.rincliu.library.widget.pulltorefresh.PullToRefreshScrollView;
 
 import android.content.Context;
 import android.content.res.TypedArray;

@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.rincliu.library.widget.view.waterfall.activity;
+package com.rincliu.library.widget.waterfall.activity;
 
 import com.rincliu.library.R;
-import com.rincliu.library.widget.view.waterfall.base.OnWaterfallScrollListener;
-import com.rincliu.library.widget.view.waterfall.base.WaterfallItemHandler;
-import com.rincliu.library.widget.view.waterfall.base.WaterfallView;
-import com.rincliu.library.widget.view.waterfall.base.WaterfallView.ItemOrder;
-import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallItemClickListener;
-import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallRefreshListener;
+import com.rincliu.library.widget.waterfall.base.OnWaterfallScrollListener;
+import com.rincliu.library.widget.waterfall.base.WaterfallItemHandler;
+import com.rincliu.library.widget.waterfall.base.WaterfallView;
+import com.rincliu.library.widget.waterfall.base.WaterfallView.ItemOrder;
+import com.rincliu.library.widget.waterfall.base.WaterfallView.OnWaterfallItemClickListener;
+import com.rincliu.library.widget.waterfall.base.WaterfallView.OnWaterfallRefreshListener;
 
 import android.os.Bundle;
 import android.os.Handler;

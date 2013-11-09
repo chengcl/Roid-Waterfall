@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.rincliu.library.widget.view.waterfall.activity;
+package com.rincliu.library.widget.waterfall.activity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.rincliu.library.R;
 import com.rincliu.library.util.RLUiUtil;
-import com.rincliu.library.widget.view.waterfall.base.WaterfallItemHandler;
-import com.rincliu.library.widget.view.waterfall.base.WaterfallView.ItemOrder;
-import com.rincliu.library.widget.view.waterfall.base.WaterfallView.OnWaterfallItemClickListener;
-import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerAdapter;
-import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerHandler;
-import com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerView;
+import com.rincliu.library.widget.waterfall.base.WaterfallItemHandler;
+import com.rincliu.library.widget.waterfall.base.WaterfallView.ItemOrder;
+import com.rincliu.library.widget.waterfall.base.WaterfallView.OnWaterfallItemClickListener;
+import com.rincliu.library.widget.waterfall.pager.WaterfallPagerAdapter;
+import com.rincliu.library.widget.waterfall.pager.WaterfallPagerHandler;
+import com.rincliu.library.widget.waterfall.pager.WaterfallPagerView;
 
 import android.os.Bundle;
 import android.view.View;
