@@ -24,7 +24,7 @@
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<com.rincliu.library.widget.view.waterfall.pager.WaterfallPagerView 
+<com.rincliu.library.widget.waterfall.pager.WaterfallPagerView 
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res/com.rincliu.library"
         android:id="@+id/wfv"
