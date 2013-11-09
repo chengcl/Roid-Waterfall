@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.rincliu.library.R;
-import com.rincliu.library.widget.RLScrollView;
+import com.rincliu.library.widget.view.RLScrollView;
 import com.rincliu.library.widget.view.pulltorefresh.ILoadingLayout;
 import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshBase;
 import com.rincliu.library.widget.view.pulltorefresh.PullToRefreshScrollView;
