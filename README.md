@@ -12,11 +12,11 @@
   offsetPageCount: 显示超出屏幕范围的页数（两个方向，始终有效，默认值1）；<BR/>
   preLoadPageCount：在上一步的基础上，根据滚动方向再次预加载的页数（仅在滚动停止后更新页面时有效，默认值1）；<BR/>
 
-未来将添加的特性
+待实现的特性
 ==========
-* 
-* 像ListView、GridView等传统AdapterView一样通过更新数据自动刷新View;
-* 切换屏幕后自动变换列数、重新排列页面内所有可见Item(不是全部刷新，效果见美丽说iPad版)。
+* Item View的重用；
+* Item View的回收(目前只回收了图片)；
+* 实现DataSetObserver，像ListView、GridView等传统AdapterView一样通过更新数据自动更新UI;
 
 使用注意
 ==========
