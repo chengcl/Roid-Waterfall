@@ -14,8 +14,9 @@
 
 未来将添加的特性
 ==========
-* 切换屏幕后自动变换列数、重新排列页面内所有可见Item（不是全部刷新，效果见美丽说iPad版）;
-* 像ListView、GridView等传统AdapterView一样通过更新数据自动刷新View。
+* 
+* 像ListView、GridView等传统AdapterView一样通过更新数据自动刷新View;
+* 切换屏幕后自动变换列数、重新排列页面内所有可见Item(不是全部刷新，效果见美丽说iPad版)。
 
 使用注意
 ==========

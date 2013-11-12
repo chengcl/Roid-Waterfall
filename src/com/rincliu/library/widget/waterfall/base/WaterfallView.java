@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.rincliu.library.R;
+import com.rincliu.library.util.RLSysUtil;
 import com.rincliu.library.widget.RLScrollView;
 import com.rincliu.library.widget.pulltorefresh.ILoadingLayout;
 import com.rincliu.library.widget.pulltorefresh.PullToRefreshBase;
@@ -32,9 +33,11 @@ import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 public class WaterfallView extends PullToRefreshScrollView{
 	private Context context;
@@ -54,6 +57,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 	
 	private ArrayList<LinearLayout> columnList=new ArrayList<LinearLayout>();
 	private RLScrollView sv;
+	private LinearLayout footer;
 	
 	private OnWaterfallItemClickListener onWaterfallItemClickListener;
 	private OnWaterfallRefreshListener onWaterfallRefreshListener;
@@ -293,7 +297,9 @@ public class WaterfallView extends PullToRefreshScrollView{
 		root.setLayoutParams(lp0);
 		LinearLayout container=new LinearLayout(context);
 		container.setOrientation(LinearLayout.HORIZONTAL);
-		container.setLayoutParams(lp0);
+		LinearLayout.LayoutParams lp1=new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0);
+		lp1.weight=1;
+		container.setLayoutParams(lp1);
 		for(int i=0;i<columnCount;i++){
 			LinearLayout column=new LinearLayout(context);
 			column.setOrientation(LinearLayout.VERTICAL);
@@ -305,6 +311,18 @@ public class WaterfallView extends PullToRefreshScrollView{
 			heightArray.put(i, 0);
 		}
 		root.addView(container);
+		footer=new LinearLayout(context);
+		footer.setOrientation(LinearLayout.VERTICAL);
+		footer.setLayoutParams(lp0);
+		ProgressBar pb=new ProgressBar(context);
+		int size=RLSysUtil.dip2px(context, 30);
+		LinearLayout.LayoutParams lpf=new LinearLayout.LayoutParams(size, size);
+		lpf.gravity=Gravity.CENTER;
+		pb.setLayoutParams(lpf);
+		pb.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progressbar));
+		footer.addView(pb);
+		footer.setVisibility(View.GONE);
+		root.addView(footer);
 		sv.addView(root);
 		hasCreated=true;
 	}
@@ -313,17 +331,19 @@ public class WaterfallView extends PullToRefreshScrollView{
 	 * 
 	 */
 	public void startLoadMore(){
-		super.setMode(Mode.MANUAL_REFRESH_ONLY);
-		super.setRefreshing(true);
+//		super.setMode(Mode.MANUAL_REFRESH_ONLY);
+//		super.setRefreshing(true);
+		footer.setVisibility(View.VISIBLE);
 	}
 	
 	/**
 	 * 
 	 */
 	public void stopLoadMore(boolean isSuccess){
-		super.setRefreshing(false);
-		super.onRefreshComplete();
-		super.setMode(Mode.PULL_FROM_START);
+//		super.setRefreshing(false);
+//		super.onRefreshComplete();
+//		super.setMode(Mode.PULL_FROM_START);
+		footer.setVisibility(View.GONE);
 		if(isSuccess){
 			updateItemsState(false);
 		}

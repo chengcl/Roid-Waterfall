@@ -58,14 +58,6 @@ public class WaterfallPagerView extends WaterfallView{
 		return waterfallPagerAdapter;
 	}
 	
-	@Override
-	public void startLoadMore(){
-		if(waterfallPagerAdapter.getDataSet().size()>0){
-			super.setMode(Mode.MANUAL_REFRESH_ONLY);
-		}
-		super.setRefreshing(true);
-	}
-	
 	/**
 	 * 
 	 */
