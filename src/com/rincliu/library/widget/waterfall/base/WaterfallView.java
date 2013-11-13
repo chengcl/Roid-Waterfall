@@ -36,6 +36,7 @@ import android.util.SparseIntArray;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -387,6 +388,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 	 */
 	public void onActivityDestroy(){
 		removeAllItems();
+		super.removeAllViews();
 	}
 	
 	/**
@@ -450,13 +452,16 @@ public class WaterfallView extends PullToRefreshScrollView{
 			if(waterfallItemHandler!=null){
 				waterfallItemHandler.onItemInvisible(item, i);
 			}
+			if(item instanceof ViewGroup){
+				((ViewGroup) item).removeAllViews();
+			}
 			visibleArray.put(i, false);
 		}
 		viewArray.clear();
 		visibleArray.clear();
 		for(int i=0;i<columnList.size();i++){
 			LinearLayout column=columnList.get(i);
-			column.removeAllViewsInLayout();
+			column.removeAllViews();
 			heightArray.put(i, 0);
 		}
 		itemCount=0;
