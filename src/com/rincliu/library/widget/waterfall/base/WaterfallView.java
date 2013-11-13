@@ -289,6 +289,9 @@ public class WaterfallView extends PullToRefreshScrollView{
 	 * @param header
 	 */
 	public void createView(View header){
+		if(hasCreated){
+			return;
+		}
 		LinearLayout.LayoutParams lp0=new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		LinearLayout root=new LinearLayout(context);
 		root.setOrientation(LinearLayout.VERTICAL);
