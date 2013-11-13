@@ -373,22 +373,28 @@ public class WaterfallView extends PullToRefreshScrollView{
 	 * 
 	 */
 	public void onActivityResume(){
-		updateItemsState(false);
+		if(hasCreated){
+			updateItemsState(false);
+		}
 	}
 	
 	/**
 	 * 
 	 */
 	public void onActivityPause(){
-		resetItemsState();
+		if(hasCreated){
+			resetItemsState();
+		}
 	}
 	
 	/**
 	 * 
 	 */
 	public void onActivityDestroy(){
-		removeAllItems();
-		super.removeAllViews();
+		if(hasCreated){
+			removeAllItems();
+			removeAllViews();
+		}
 	}
 	
 	/**
@@ -445,7 +451,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 	 */
 	public void removeAllItems(){
 		if(!hasCreated){
-			return;
+			throw new IllegalStateException("The method createView() should be called first");
 		}
 		for(int i=0;i<itemCount;i++){
 			View item=viewArray.get(i);
