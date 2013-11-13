@@ -445,7 +445,7 @@ public class WaterfallView extends PullToRefreshScrollView{
 	 */
 	public void removeAllItems(){
 		if(!hasCreated){
-			throw new IllegalStateException("The method createView() should be called first");
+			return;
 		}
 		for(int i=0;i<itemCount;i++){
 			View item=viewArray.get(i);
